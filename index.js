@@ -1,4 +1,4 @@
-const { Map } = require('immutable')
+const { Map, List } = require('immutable')
 /*
 const map1 = Map({ a: 1, b: 2, c: 3 })
 const map2 = map1.set('b', 50)
@@ -83,7 +83,7 @@ function getAllValidMoves(board) {
         .map((frommediate, to) => [...frommediate.entries()].map(e => [to, ...e]))
         .valueSeq()
         .flatMap(v => v)
-        .toArray()
+        .toArray()        
 }
 
 console.log(getAllValidMoves(initialBoard))
@@ -92,16 +92,23 @@ console.log(getAllValidMoves(initialBoard))
 /*const testMap = Map({"1":"2", "3":"4"})
 console.log([...testMap.entries()])*/
 
+function pegsCount(board) {
+    return initialBoard.filter(v => v.get("pegged")).count()
+}
+
 function makeMove(board, [to, from, mediate]) {
     return removePeg(movePeg(board, from, to), mediate)
 }
 
-function logic(board) {
-    const moves = getAllMovesFromBoard(board);
-    if (!moves) {
+function logic(board, moveSeq = List()) {
+    const moves = getAllValidMoves(board);
+    if (!moves.length) {
+        if (pegsCount(board) == 1) {
+            return moveSeq;
+        }
         return false;
     }
-    const seq = takeFirst(moves.each(m => logic(makeMove(board, m))))
+    const seq = takeFirst(moves.each(m => logic(makeMove(board, m), moveSeq.push(m[0]))))
     if (seq) {
         return seq
     } else {
