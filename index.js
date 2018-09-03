@@ -78,8 +78,7 @@ console.log(getAllValidMoves(initialBoard))
  */
 function getAllValidMoves(board) {
     return initialBoard.filter(v => !v.get("pegged"))
-        .map(v => v.get("connections")
-        .filter(v => board.get(v).get("pegged")))
+        .map(v => v.get("connections").filter((v, k) => isPegged(board, v) && isPegged(board, k)))
         .map((frommediate, to) => [...frommediate.entries()].map(e => [to, ...e]))
         .valueSeq()
         .flatMap(v => v)
@@ -101,17 +100,19 @@ function makeMove(board, [to, from, mediate]) {
 }
 
 function logic(board, moveSeq = List()) {
-    const moves = getAllValidMoves(board);
+    const moves = getAllValidMoves(board)
     if (!moves.length) {
         if (pegsCount(board) == 1) {
             return moveSeq;
         }
         return false;
     }
-    const seq = takeFirst(moves.each(m => logic(makeMove(board, m), moveSeq.push(m[0]))))
+    const seq = moves.find(m => logic(makeMove(board, m), moveSeq.push(m[0])))
     if (seq) {
         return seq
     } else {
         return false
     }
 }
+
+console.log(logic(initialBoard))
