@@ -71,14 +71,26 @@ const test = movePeg(initialBoard, "4", "1")
 console.log(getAllValidMoves(initialBoard))
 */
 
+/**
+ * 
+ * @param {Board} board
+ * @returns {Array} Array of [to, from, mediate] 
+ */
 function getAllValidMoves(board) {
     return initialBoard.filter(v => !v.get("pegged"))
         .map(v => v.get("connections")
         .filter(v => board.get(v).get("pegged")))
-        //.flatMap((v, k) => )
+        .map((frommediate, to) => [...frommediate.entries()].map(e => [to, ...e]))
+        .valueSeq()
+        .flatMap(v => v)
+        .toArray()
 }
 
 console.log(getAllValidMoves(initialBoard))
+//console.log(getAllValidMoves(initialBoard).get("2"))
+
+/*const testMap = Map({"1":"2", "3":"4"})
+console.log([...testMap.entries()])*/
 
 function makeMove(board, [to, from, mediate]) {
     return removePeg(movePeg(board, from, to), mediate)
