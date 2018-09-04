@@ -10,7 +10,7 @@ console.log(map1.get('b') + " vs. " + map2.get('b')) // 2 vs. 50
 
 const initialBoard = Map({
     1: Map({pegged: false, connections: Map({6: "3", 4: "2"})}),
-    2: Map({pegged: false, connections: Map({9: "5", 7: "4"})}),
+    2: Map({pegged: true, connections: Map({9: "5", 7: "4"})}),
     3: Map({pegged: true, connections: Map({10: "6", 8: "5"})}),
     4: Map({pegged: true, connections: Map({13: "8", 11: "7", 6: "5", 1: "2"})}),
     5: Map({pegged: true, connections: Map({14: "9", 12: "8"})}),
@@ -77,7 +77,7 @@ console.log(getAllValidMoves(initialBoard))
  * @returns {Array} Array of [to, from, mediate] 
  */
 function getAllValidMoves(board) {
-    return initialBoard.filter(v => !v.get("pegged"))
+    return board.filter(v => !v.get("pegged"))
         .map(v => v.get("connections").filter((v, k) => isPegged(board, v) && isPegged(board, k)))
         .map((frommediate, to) => [...frommediate.entries()].map(e => [to, ...e]))
         .valueSeq()
