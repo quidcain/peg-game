@@ -1,5 +1,15 @@
 const { Map, List } = require('immutable')
 
+Array.prototype.rightSome = function(predicate) {
+    for (element of this) {
+        const result = predicate(element)
+        if (result) {
+            return result
+        }
+    }
+    return false
+}
+
 const initialBoard = Map({
     1: Map({pegged: false, connections: Map({6: "3", 4: "2"})}),
     2: Map({pegged: true, connections: Map({9: "5", 7: "4"})}),
@@ -80,7 +90,7 @@ function logic(board, moveSeq = List()) {
         }
         return false;
     }
-    const seq = moves.find(m => logic(makeMove(board, m), moveSeq.push([m[1], m[0]])))
+    const seq = moves.rightSome(m => logic(makeMove(board, m), moveSeq.push([m[1], m[0]])))
     if (seq) {
         return seq
     } else {
