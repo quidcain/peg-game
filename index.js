@@ -92,7 +92,7 @@ console.log(getAllValidMoves(initialBoard))
 console.log([...testMap.entries()])*/
 
 function pegsCount(board) {
-    return initialBoard.filter(v => v.get("pegged")).count()
+    return board.filter(v => v.get("pegged")).count()
 }
 
 function makeMove(board, [to, from, mediate]) {
