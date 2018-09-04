@@ -1,12 +1,4 @@
 const { Map, List } = require('immutable')
-/*
-const map1 = Map({ a: 1, b: 2, c: 3 })
-const map2 = map1.set('b', 50)
-console.log(map1.get('b') + " vs. " + map2.get('b')) // 2 vs. 50
-*/
-
-//console.log(4)
-
 
 const initialBoard = Map({
     1: Map({pegged: false, connections: Map({6: "3", 4: "2"})}),
@@ -58,19 +50,6 @@ function makeMove(board, from, to) {
     }
 }
 
-const test = movePeg(initialBoard, "4", "1")
-
-/*function getAllValidMoves(board) {
-    const connectionsOfHoles = initialBoard.filter(v => !v.get("pegged"))
-        .valueSeq()
-        .toSet()
-        .map(o => o.get("connections"))
-    const moves = connectionsOfHoles.flatMap(v => v.keySeq().toSet())
-    console.log(moves.map(e => Map({[e]: getValidMoves(board, e)})).filter(v => v.isEmpty))
-}
-console.log(getAllValidMoves(initialBoard))
-*/
-
 /**
  * 
  * @param {Board} board
@@ -84,12 +63,6 @@ function getAllValidMoves(board) {
         .flatMap(v => v)
         .toArray()        
 }
-
-console.log(getAllValidMoves(initialBoard))
-//console.log(getAllValidMoves(initialBoard).get("2"))
-
-/*const testMap = Map({"1":"2", "3":"4"})
-console.log([...testMap.entries()])*/
 
 function pegsCount(board) {
     return board.filter(v => v.get("pegged")).count()
