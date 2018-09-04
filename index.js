@@ -107,7 +107,7 @@ function logic(board, moveSeq = List()) {
         }
         return false;
     }
-    const seq = moves.find(m => logic(makeMove(board, m), moveSeq.push(m[0])))
+    const seq = moves.find(m => logic(makeMove(board, m), moveSeq.push([m[1], m[0]])))
     if (seq) {
         return seq
     } else {
